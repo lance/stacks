@@ -10,7 +10,7 @@ WORKDIR /project
 RUN mvn -N io.takari:maven:wrapper -Dmaven=$(mvn help:evaluate -Dexpression=maven.version -q -DforceStdout)
 RUN mvn -B install dependency:go-offline -DskipTests
 
-ENV APPSODY_MOUNTS=".:/project/user-app"
+ENV APPSODY_MOUNTS=".:/work"
 ENV APPSODY_DEPS="/home/quarkus/.m2"
 
 ENV APPSODY_RUN="./mvnw -B compile quarkus:dev"
@@ -25,7 +25,7 @@ ENV APPSODY_TEST="./mvnw -B test"
 ENV APPSODY_TEST_ON_CHANGE="./mvnw -B test"
 ENV APPSODY_TEST_KILL=true
 
-WORKDIR /project/user-app
+WORKDIR /work
 
 ENV PORT=8080
 

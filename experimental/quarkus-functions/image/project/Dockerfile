@@ -7,9 +7,6 @@ RUN cd /project && mvn -B install dependency:go-offline -DskipTests
 WORKDIR /project/user-app
 COPY ./user-app/src ./src
 COPY ./user-app/pom.xml ./
-USER root
-RUN chown -R quarkus .
-USER quarkus
 RUN mvn -B -Pnative clean package
 
 
@@ -18,7 +15,6 @@ FROM registry.access.redhat.com/ubi8/ubi-minimal
 
 WORKDIR /work/
 COPY --from=build /project/user-app/target/*-runner /work/application
-RUN chmod 775 /work
-USER quarkus
+RUN chmod 775 /work /work/application && mkdir -p /work/.mvn/wrapper
 EXPOSE 8080
 CMD ["./application", "-Dquarkus.http.host=0.0.0.0"]
